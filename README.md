@@ -14,3 +14,74 @@ O PostgreSQL é um sistema de gerenciamento de banco de dados relacional (SGBDR)
 - Ferramentas de Administração: Existem várias ferramentas de administração gráfica e de linha de comando disponíveis para gerenciar bancos de dados PostgreSQL, como pgAdmin e psql.
 - Compatibilidade com Georreferenciamento: Possui suporte robusto para dados georreferenciados e é amplamente utilizado em aplicações GIS (Sistemas de Informação Geográfica).
 Segurança: Oferece recursos avançados de segurança, incluindo autenticação, autorização e criptografia.
+
+## Exemplos de comando
+
+- Criar banco de dados
+  
+      CREATE DATABASE nome_do_banco;
+- Conectar banco de dados
+
+      \c nome_do_banco;
+- Criar uma tabela
+
+      CREATE TABLE usuarios (
+      id SERIAL PRIMARY KEY,
+      nome VARCHAR(50),
+      idade INT
+      );
+- Inserir dados na tabela
+
+      INSERT INTO usuarios (nome, idade) VALUES
+      ('João', 25),
+      ('Maria', 30),
+      ('Carlos', 22);
+- Consultar dados
+
+      SELECT * FROM usuarios;
+- Atualizar dados
+
+      UPDATE usuarios SET idade = 26 WHERE nome = 'João';
+- Excluir dados
+  
+      DELETE FROM usuarios WHERE nome = 'Carlos';
+- Consulta de condições
+
+      SELECT * FROM usuarios WHERE idade > 25;
+- Criar indices
+
+      CREATE INDEX idx_nome ON usuarios(nome);
+- Criar uma função
+
+      CREATE OR REPLACE FUNCTION aumentar_idade(p_id INT, p_valor INT)
+      RETURNS VOID AS
+      $$
+      BEGIN
+          UPDATE usuarios SET idade = idade + p_valor WHERE id = p_id;
+      END;
+      $$
+      LANGUAGE plpgsql;
+- Executar uma função
+
+      SELECT aumentar_idade(1, 2);
+- Criar um trigger
+
+      CREATE OR REPLACE FUNCTION atualizar_data_modificacao()
+      RETURNS TRIGGER AS
+      $$
+      BEGIN
+          NEW.data_modificacao = NOW();
+          RETURN NEW;
+      END;
+      $$
+      LANGUAGE plpgsql;
+      
+      CREATE TRIGGER trigger_atualizar_data_modificacao
+      BEFORE UPDATE ON usuarios
+      FOR EACH ROW
+      EXECUTE FUNCTION atualizar_data_modificacao();
+
+
+
+
+
